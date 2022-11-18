@@ -31,8 +31,6 @@ head(Merged_data1)
 dim(Merged_data1)
 #Merged_data1<-orderBy(~id, data=Merged_data1)
 LongData11<-Merged_data1[Merged_data1$ATF>Merged_data1$start,]
-LongData1<-LongData11[1:100,]
-dim(LongData1)
 LongData<-subset(LongData1, ave(id, pair, FUN = function(x) length(unique(x))) > 1)
 
 dim(LongData)
