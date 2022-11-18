@@ -1,4 +1,4 @@
-library(numDeriv)
+library(numDeriv); library(dplyr)
 Dat<-read.csv( file="C:\\Users\\mmamm\\Desktop\\Data Manipulation\\result12611.csv" )
 attach(Dat)
 head(Dat,10) 
