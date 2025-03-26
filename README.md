@@ -1,4 +1,4 @@
-# JointModel
+
 This repository consists of software implementation of the methods presented in the manuscript in R.
 
 Title: "Modelling the effect of Longitudinal Markers on Left-Truncated Time-to-Event Outcomes in Twin Studies"
