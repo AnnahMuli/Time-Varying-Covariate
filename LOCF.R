@@ -1,9 +1,13 @@
+rm(list=ls())
+
+
 
 #################################################################################
 #  Last observation carried forward: Weibull baseline hazard and gamma frailty  #
+#  h0 = lambda*rho*t^(rh0-1)   and   H0 = lambda*t^(rho)                        #
 #################################################################################
 #                                                                               #
-#  Its parameters are                                                           #
+#  The function arguments are:                                                  #
 #   - data     : a data.frame containing all the variables;                     #
 #   - cluster  : the name of the variable in data containing cluster IDs;       #
 #   - id       : the name of the variable in data containing individual IDs;    #
@@ -11,14 +15,14 @@
 #   - status   : censoring indicator                                            #
 #   - SurvTime : Survival time                                                  #
 #   - A0       : Age at entry                                                   #
-#   - inip     : initial values for the parameters                              #
+#   - inip     : initial values for the parameters(Lambda,Rho,alpha,theta)      #
 #################################################################################
 #                                                                               #
 #   Last modification : March  27, 2025                                         #
 #                                                                               #
 #################################################################################
 
-fit_LOCF <- function(data, cluster, id, inip, CovTime, status, covariate,SurvTime,A0) 
+fit_LOCF <- function(data, cluster, id, inip, CovTime, status, covariate,SurvTime,A0, hess) 
 {
   library(numDeriv); library(dplyr)
   
@@ -30,6 +34,8 @@ fit_LOCF <- function(data, cluster, id, inip, CovTime, status, covariate,SurvTim
   Dat$cluster <- Dat[[deparse(substitute(cluster))]]
   Dat$ATF <- Dat[[deparse(substitute(SurvTime))]]
   Dat$A0 <- Dat[[deparse(substitute(A0))]]
+  
+  Dat<- Dat[Dat$A0<Dat$ATF,] # Only include individual who survived beyond the age at entry
   
   Dat3<-Dat %>% group_by(id) %>%
     mutate(stop = lead(start, default = 1e6),
@@ -75,23 +81,26 @@ fit_LOCF <- function(data, cluster, id, inip, CovTime, status, covariate,SurvTim
   }
   
   
-  t2<-nlminb(inip, Lik_LOCF,hessian=hess, control = list(rel.tol = 1e-8) )
+  t2<-nlminb(inip, Lik_LOCF,hessian=hess, control = list(rel.tol = 1e-6) )
+   output <- c(alpha=t2$par[4], theta = t2$par[3],
+           lambda = exp(t2$par[1]),
+           rho =exp(t2$par[2])  )
+  if (hess == T){
+    
   std3 <- sqrt(diag(solve(hessian( Lik_LOCF, t2$par))))
   
-  Output<-round( matrix( c( t2$par[4], std3[4], t2$par[3], std3[3] ,  exp(t2$par[1]), std3[1]*exp(t2$par[1]), exp( t2$par[2]) , std3[2]*exp(t2$par[2])  ), nrow=4, byrow=T),3)
-  colnames(Output) <- c("Estimate","SE")
-  rownames(Output) <- c("alpha","theta","Lambda","Rho" )
-  Output
-  
-  
+  Output2<-round( matrix( c( t2$par[4], std3[4], t2$par[3], std3[3] ,  exp(t2$par[1]), std3[1]*exp(t2$par[1]), exp( t2$par[2]) , std3[2]*exp(t2$par[2])  ), nrow=4, byrow=T),3)
+  colnames(Output2) <- c("Estimate","SE")
+  rownames(Output2) <- c("alpha","theta","Lambda","Rho" )
+  Output2
+  }  else { output  }
+ # as.data.frame(Output2)
 }
 
 
-
-
-#================================================================================================;
-#Fitting to the data
-DatH<-read.csv( file="C:\\Users\\mmamm\\Desktop\\Data Manipulation\\result12611.csv" )
+# Data Application step;
+DatH<-read.csv( file="C:/Users/staammu/Desktop/SimulData.csv" )
 attach(DatH)
-fit_LOCF ( data=DatH, cluster = pair, id=id, inip=c(  log(0.1), log(1.5),0.3,-3.5), CovTime=start, status=status,SurvTime=ATF, A0=A0, covariate=zij)
+fit_LOCF ( data=DatH, cluster = pair, id=id, inip=c(  log(0.01), log(2),0.3,2 ), CovTime=start, status=status,SurvTime=ATF, A0=A0, covariate=zij, hess=T)
+
 
