@@ -25,7 +25,7 @@ This folder contains the following files:
     - `RRC.R`
     A R script with the function required to apply the Risk set Regression Calibration (RRC) approach
     
-    - `JM.R`
+    - `Pseudo joint model analysis.R`
     A R script with the function required to apply the two-stage joint modeling (JM) approach
 
 2. An example simulated dataset following the required format to run performed the four methods introduced in 1. 
