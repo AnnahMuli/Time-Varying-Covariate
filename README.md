@@ -14,27 +14,31 @@ Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 This folder contains the following files:
 
-1. A collection of documented R scripts that contain all required functions to perform the four methods presented in the manuscript.
+1. A collection of documented R scripts that contain all required functions to perform the four methods presented in the manuscript. All the scripts arrange tha data in the start , stop format before performing the likelihood estimation.
 
     - `LOCF.R`
-    A R script with the functions and steps required to apply the Last observation carried forward (LOCF) approach
+    A R script with the function to apply the Last observation carried forward (LOCF) approach
     
     -  `ORC.R`
-    A R script with the functions and steps required to apply the Ordinary Regression Calibration (ORC) approach
+    A R script with the function to apply the Ordinary Regression Calibration (ORC) approach
 
     - `RRC.R`
-    A R script with the functions and steps required to apply the Risk set Regression Calibration (RRC) approach
+    A R script with the function required to apply the Risk set Regression Calibration (RRC) approach
     
     - `JM.R`
-    A R script with the functions and steps required to apply the two-stage joint modeling (JM) approach
+    A R script with the function required to apply the two-stage joint modeling (JM) approach
 
 2. An example simulated dataset following the required format to run performed the four methods introduced in 1. 
 
-   The dataset is presented in long format (start stop) and contains the following variables:
+   The dataset is contains the following variables:
     
-   - `Start`: age at covariate measurement
-   - `Stop` : age at event
-   - `status`: non-censoring indicator
+   - `SurvTime` : survival time
+   - `status`: censoring indicator
    - `A0`: age at entry in the study
+   - `cluster`: the name of the variable in the data containing cluster IDs
+   - `id`: the name of the variable in the data containing individual IDs
+   - `Cov`: the longitudinal outcome measurements
+   - `CovTime`: age at covariate measurement
+
 
 
