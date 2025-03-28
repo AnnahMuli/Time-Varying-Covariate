@@ -14,7 +14,7 @@ Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 This folder contains the following files:
 
-1. A collection of documented R scripts that contain all required functions to perform the four methods presented in the manuscript. All the scripts arrange tha data in the start , stop format before performing the likelihood estimation.
+1. A collection of documented R scripts that contain all required functions to perform the four methods presented in the manuscript. 
 
     - `LOCF.R`
     A R script with the function to apply the Last observation carried forward (LOCF) approach
