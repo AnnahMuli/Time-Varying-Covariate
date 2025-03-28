@@ -1,3 +1,4 @@
+rm(list=ls())
 #################################################################################
 #  Ordinary regression calibration: Weibull baseline hazard and gamma frailty   #
 #  h0 = lambda*rho*t^(rh0-1)   and   H0 = lambda*t^(rho)                        #
@@ -54,7 +55,7 @@ if (randslope == F){
     newSubset
   }
   
-  LMM_Output<-tt[1:nt-1]|>purrr::map_dfr(predicted_Cov) 
+  LMM_Output<-tt[1:(nt-1)]|>purrr::map_dfr(predicted_Cov) 
 
   LMM_Output_Merged<- LMM_Output
   Dat2<- LMM_Output_Merged[LMM_Output_Merged$ATF>LMM_Output_Merged$start,]
@@ -148,7 +149,7 @@ if (randslope == T) {
     return(newSubset)
   }
   
-  LMM_Output<-tt[1:nt-1]|>purrr::map_dfr(predicted_Cov) 
+  LMM_Output<-tt[1:(nt-1)]|>purrr::map_dfr(predicted_Cov) 
 
   LMM_Output_Merged<- LMM_Output
   Dat2<- LMM_Output_Merged[LMM_Output_Merged$ATF>LMM_Output_Merged$start,]
@@ -223,11 +224,6 @@ if (randslope == T) {
 # Data Application step;
 DatH<-read.csv( file="C:/Users/staammu/Desktop/SimulData.csv" )
 attach(DatH)
-fit_ORC ( data=DatH, cluster = pair, id=id, inip=c(  log(0.01), log(2),0.5, 1.5 ) , Cov=zij,  CovTime=start, status=status,SurvTime=ATF, A0=A0, covariate=zij, hess=T, randslope=T)
-
-
-
-
-
+fit_ORC ( data=DatH, cluster = pair, id=id, inip=c(  log(0.01), log(2),0.3, 2 ) , Cov=zij,  CovTime=start, status=status,SurvTime=ATF, A0=A0, covariate=zij, hess=T, randslope=F)
 
 
