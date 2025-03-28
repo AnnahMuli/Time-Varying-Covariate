@@ -1,7 +1,3 @@
-rm(list=ls())
-
-
-
 #################################################################################
 #  Last observation carried forward: Weibull baseline hazard and gamma frailty  #
 #  h0 = lambda*rho*t^(rh0-1)   and   H0 = lambda*t^(rho)                        #
